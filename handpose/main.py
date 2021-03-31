@@ -13,7 +13,7 @@ cap = cv2.VideoCapture(0)
 with mp_hands.Hands(
     max_num_hands=1,
     min_detection_confidence=0.8,
-    min_tracking_confidence=0.8) as hands:
+    min_tracking_confidence=0.4) as hands:
   while cap.isOpened():
     success, image = cap.read()
     if not success:
@@ -40,17 +40,17 @@ with mp_hands.Hands(
         for hand_landmarks in results.multi_hand_landmarks:
             x = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].x * image_width
             y = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_height
-            coord_dict.append([x,y])
-            if coord_dict[-1][0] - coord_dict[0][0] > 40:
-                PressKey(D)
-                ReleaseKey(D)
-            elif coord_dict[-1][0] - coord_dict[0][0] < 40:
-                PressKey(A)
-                ReleaseKey(A)
-            if coord_dict[-1][1] - coord_dict[0][1] < 40:
-                PressKey(spacebar)
-            else:
-                ReleaseKey(spacebar)
+            # coord_dict.append([x,y])
+            # if coord_dict[-1][0] - coord_dict[0][0] > 40:
+            #     PressKey(D)
+            #     ReleaseKey(D)
+            # elif coord_dict[-1][0] - coord_dict[0][0] < 40:
+            #     PressKey(A)
+            #     ReleaseKey(A)
+            # if coord_dict[-1][1] - coord_dict[0][1] < 40:
+            #     PressKey(spacebar)
+            # else:
+            #     ReleaseKey(spacebar)
 #           print('hand_landmarks:', hand_landmarks) #keypoint
             print(
               f'Index finger tip coordinates: (',
