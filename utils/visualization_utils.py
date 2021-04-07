@@ -733,7 +733,7 @@ def visualize_boxes_and_labels_on_image_array(
     track_ids=None,
     use_normalized_coordinates=False,
     max_boxes_to_draw=20,
-    min_score_thresh=0.75,
+    min_score_thresh=0.25,
     agnostic_mode=False,
     line_thickness=4,
     groundtruth_box_visualization_color='black',

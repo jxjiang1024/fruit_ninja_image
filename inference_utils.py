@@ -16,7 +16,7 @@ from PIL import Image, ImageDraw, ImageFont
 import tensorflow as tf
 from object_detection.utils import ops as utils_ops
 from object_detection.utils import label_map_util
-from object_detection.utils import visualization_utils as vis_util
+from utils import visualization_utils as vis_util
 
 
 
@@ -61,8 +61,9 @@ def run_inference_for_single_image(model, image):
     detection_masks_reframed = tf.cast(detection_masks_reframed > 0.5,
                                        tf.uint8)
     output_dict['detection_masks_reframed'] = detection_masks_reframed.numpy()
-  output_dict_cleaned = clean_output(output_dict,0.5)
-  return output_dict_cleaned
+  #output_dict_cleaned = clean_output(output_dict,0.5)
+  #return output_dict_cleaned
+  return output_dict
 
 def clean_output(output, raw_score_factor):
     indexes = np.array([i for (i,j) in enumerate(output["detection_scores"]) if j>=raw_score_factor])
