@@ -126,19 +126,21 @@ with mp_hands.Hands(
 
 
         if index_ycoord < average_peace_ycoord and middle_ycoord  < average_peace_ycoord and diff_thumb_ring<0.1*thumb_xcoord and diff_thumb_pinky<0.1*thumb_xcoord : 
-            # PressKey(spacebar)
+            PressKey(spacebar)
             print("space pressed")
         # pointing left
         elif thumb_xcoord > index_xcoord and index_xcoord < average_left_xcoord:
-            # moveMouse(mouse_xcor*0.9,mouse_ycor)
-            print("mouse moved, left")
+            if mouse_xcor > 385 or mouse_xcor <300: 
+                moveMouse(mouse_xcor*0.95,mouse_ycor)
+                print("mouse moved, left")
         # pointing right
         elif thumb_xcoord < index_xcoord and index_xcoord > average_left_xcoord:
-            # moveMouse(mouse_xcor*1.1,mouse_ycor)
-            print("mouse moved, right")
+            if mouse_xcor < 1790:
+                moveMouse(mouse_xcor*1.05,mouse_ycor)
+                print("mouse moved, right")
     
     # 240,385
-    # 935,1080
+    # 1775,1920
     #1920, 1080
 
 
