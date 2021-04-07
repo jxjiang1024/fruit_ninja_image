@@ -139,6 +139,7 @@ with mp_hands.Hands(
     
     # 240,385
     # 935,1080
+    #1920, 1080
 
 
     cv2.imshow('MediaPipe Hands', image)
