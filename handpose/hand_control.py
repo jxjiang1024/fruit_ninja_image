@@ -1,17 +1,3 @@
-'''
-Source code for Fruit Ninja AI ( https://www.youtube.com/watch?v=Vw3vU9OdWAs ) 
-
-The AI only loses when a bomb is overlapped with a fruit on its whole path, as the AI won't find a good opportunity to slice it.
-
-The game as a chrome extension: https://chrome.google.com/webstore/detail/fruit-ninja-game/fdkhnibpmdfmpgaipjiodbpdngccfibp
-
-Simply place the chrome extension on the top right corner of your screen and run this file :) 
-
-Some heuristics and timings might differ depending on your machine.
-(too much/little computing time between frames might affect the AI's decisions)
-'''
-
-
 import time
 from datetime import datetime
 import cv2
@@ -28,10 +14,8 @@ import cv2
 import mediapipe as mp
 from directkeys import PressKey, ReleaseKey, leftarrow, rightarrow, A, D, spacebar
 
-DELAY_BETWEEN_SLICES = 0.01 # for sleep(DELAY_BETWEEN_SLICES)
-DRAW_BOMBS = True
+
 DEBUG = True
-# pylint: disable=no-member,
 
 screenHeight = win32api.GetSystemMetrics(1)
 screenWidth = win32api.GetSystemMetrics(0)
@@ -130,7 +114,7 @@ with mp_hands.Hands(
             print("space pressed")
         # pointing left
         elif thumb_xcoord > index_xcoord and index_xcoord < average_left_xcoord:
-            if mouse_xcor > 385 or mouse_xcor <300: 
+            if mouse_xcor > 500 : 
                 moveMouse(mouse_xcor*0.95,mouse_ycor)
                 print("mouse moved, left")
         # pointing right
@@ -138,10 +122,6 @@ with mp_hands.Hands(
             if mouse_xcor < 1790:
                 moveMouse(mouse_xcor*1.05,mouse_ycor)
                 print("mouse moved, right")
-    
-    # 240,385
-    # 1775,1920
-    #1920, 1080
 
 
     cv2.imshow('MediaPipe Hands', image)
