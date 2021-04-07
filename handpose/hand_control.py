@@ -136,7 +136,9 @@ with mp_hands.Hands(
         elif thumb_xcoord < index_xcoord and index_xcoord > average_left_xcoord:
             # moveMouse(mouse_xcor*1.1,mouse_ycor)
             print("mouse moved, right")
-            
+    
+    # 240,385
+    # 935,1080
 
 
     cv2.imshow('MediaPipe Hands', image)
