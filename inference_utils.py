@@ -14,9 +14,9 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFont
 
 import tensorflow as tf
-from utils import ops as utils_ops
-from utils import label_map_util
-from utils import visualization_utils as vis_util
+from object_detection.utils import ops as utils_ops
+from object_detection.utils import label_map_util
+from object_detection.utils import visualization_utils as vis_util
 
 
 
@@ -54,6 +54,7 @@ def run_inference_for_single_image(model, image):
   # Handle models with masks:
   if 'detection_masks' in output_dict:
     # Reframe the the bbox mask to the image size.
+    
     detection_masks_reframed = utils_ops.reframe_box_masks_to_image_masks(
               output_dict['detection_masks'], output_dict['detection_boxes'],
                image.shape[0], image.shape[1])
