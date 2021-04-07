@@ -18,22 +18,22 @@ import cv2
 import mss
 import numpy as np
 import os
-import win32api, win32con
+# import win32api, win32con
 import pyautogui
 import sys
 import threading
 from time import sleep
 import math
-import keyboard
+# import keyboard
 time.sleep(5)
 DELAY_BETWEEN_SLICES = 0.19 # for sleep(DELAY_BETWEEN_SLICES)
 DRAW_BOMBS = True
 DEBUG = True
 # pylint: disable=no-member,
 
-screenHeight = win32api.GetSystemMetrics(1)
-screenWidth = win32api.GetSystemMetrics(0)
-
+# screenHeight = win32api.GetSystemMetrics(1)
+# screenWidth = win32api.GetSystemMetrics(0)
+screenWidth, screenHeight = pyautogui.size()
 '''
 The game resolution is 750x500
 '''
@@ -115,8 +115,9 @@ def gameCoord(x, y):
 Moves mouse to (x,y) in screen coordinates
 '''
 def moveMouse(x, y):
-    win32api.mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, 
-        int(x/screenWidth*65535.0), int(y/screenHeight*65535.0))
+    # win32api.mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, 
+    #     int(x/screenWidth*65535.0), int(y/screenHeight*65535.0))
+    print("move mouse")
 
 '''
 Moves cursor from (x1,y1) to (x2, y2); 
@@ -132,9 +133,9 @@ def swipe(_x1, _y1, _x2, _y2):
     for i in range(points+1):
         moveMouse((x1 * (points - i ) + x2 * i)/points, (y1 * (points -i ) + y2 * i)/points)
         if (i == 0):
-            win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0, 0, 0, 0)
+            # win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0, 0, 0, 0)
             moveMouse((x1 * (points -i ) + x2 * i)/points, (y1 * (points -i ) + y2 * i)/points)
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0, 0,0,0)
+    # win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0, 0,0,0)
     moveMouse(x2, y2)
     time.sleep(DELAY_BETWEEN_SLICES)
 
@@ -284,9 +285,11 @@ with mss.mss() as sct:
     while True:
         last_time = time.time()
         screen = np.array(sct.grab(gameScreen))
+        # print(screen)
         screen = np.flip(screen[:, :, :3], 2) 
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
         img = screen.copy()
+        print(img.shape)
 
         # color ranges for object detections
         objectBoundaries = [([15, 180, 130], [35, 237, 209], 120, True), # fruit
@@ -414,7 +417,7 @@ with mss.mss() as sct:
 
         cv2.waitKey(1)
         # Press 'q' to quit
-        if keyboard.is_pressed('q'):
-            cv2.destroyAllWindows()
-            quit()
+        # if keyboard.is_pressed('q'):
+        #     cv2.destroyAllWindows()
+        #     quit()
 quit()
