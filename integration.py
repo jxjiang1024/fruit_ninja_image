@@ -15,33 +15,6 @@ from inference_utils import *
 import tensorflow as tf
 import os
 
-# import keyboard
-time.sleep(1)
-DELAY_BETWEEN_SLICES = 0.19 # for sleep(DELAY_BETWEEN_SLICES)
-DRAW_BOMBS = True
-DEBUG = True
-# pylint: disable=no-member,
-
-# screenHeight = win32api.GetSystemMetrics(1)
-# screenWidth = win32api.GetSystemMetrics(0)
-screenWidth, screenHeight = pyautogui.size()
-'''
-The game resolution is 750x500
-'''
-# width = 750
-# height = 500
-
-width = 1800
-height = 2000
-
-'''
-I'm displaying my game at the top right corner of my screen
-'''
-gameScreen = {'top': 150, 'left': screenWidth - width, 'width': width, 'height': height/2}
-# gameScreen = {'top': 200, 'left': 600, 'width': width, 'height': height}
-
-
-
 output_directory = os.path.abspath('inference_graph_2')
 labelmap_path = os.path.abspath('labelmap.pbtxt')
 
@@ -62,21 +35,20 @@ with mss.mss() as sct:
     while True:
         last_time = time.time()
         screen = np.array(sct.grab(bbox))
-        # print(screen)
         screen = np.flip(screen[:, :, :3], 2) 
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
         img = screen.copy()
-        print(img.shape)
-        # cv2.imshow('img', img)
         output_dict = inference_utils.run_inference_for_single_image(model, img)
+        # boxes = output_dict["detection_boxes"]
+        # for box in boxes:
+        #     img = cv2.rectangle(img, (int(box[0]), int(box[1]),int(box[2]), int(box[3])),(255, 0, 0),2)
         image_np_with_detections = vis_util.visualize_boxes_and_labels_on_image_array(img, output_dict['detection_boxes'],
                               output_dict['detection_classes'],output_dict['detection_scores'], category_index, instance_masks=output_dict.get('detection_masks_reframed', None), use_normalized_coordinates=True,
                               line_thickness=8)
-        print(output_dict)
         # cv2.imshow('img', img)
         cv2.imshow("img", image_np_with_detections)
         cv2.waitKey(1)
-        break
+        
         
       
 quit()

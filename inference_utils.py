@@ -14,9 +14,9 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFont
 
 import tensorflow as tf
-from object_detection.utils import ops as utils_ops
-from object_detection.utils import label_map_util
-from object_detection.utils import visualization_utils as vis_util
+from utils import ops as utils_ops
+from utils import label_map_util
+from utils import visualization_utils as vis_util
 
 
 
@@ -37,11 +37,12 @@ def run_inference_for_single_image(model, image):
   # Run inference
   model_fn = model.signatures['serving_default']
   output_dict = model_fn(input_tensor)
-
+  print(output_dict)
   # All outputs are batches tensors.
   # Convert to numpy arrays, and take index [0] to remove the batch dimension.
   # We're only interested in the first num_detections.
   num_detections = int(output_dict.pop('num_detections'))
+  # print(num_detections)
   output_dict = {key:value[0, :num_detections].numpy()
                  for key,value in output_dict.items()}
   output_dict['num_detections'] = num_detections
@@ -59,5 +60,13 @@ def run_inference_for_single_image(model, image):
     detection_masks_reframed = tf.cast(detection_masks_reframed > 0.5,
                                        tf.uint8)
     output_dict['detection_masks_reframed'] = detection_masks_reframed.numpy()
+  output_dict_cleaned = clean_output(output_dict,0.5)
+  return output_dict_cleaned
 
-  return output_dict
+def clean_output(output, raw_score_factor):
+    indexes = np.array([i for (i,j) in enumerate(output["detection_scores"]) if j>=raw_score_factor])
+    print(indexes)
+    for key in output.keys():
+        if key != "num_detections":
+            output[key] = output[key][indexes]
+    return output
