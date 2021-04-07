@@ -41,12 +41,12 @@ The game resolution is 750x500
 # height = 500
 
 width = 1800
-height = 1300
+height = 2000
 
 '''
 I'm displaying my game at the top right corner of my screen
 '''
-gameScreen = {'top': 100, 'left': screenWidth - width, 'width': width, 'height': height}
+gameScreen = {'top': 150, 'left': screenWidth - width, 'width': width, 'height': height}
 # gameScreen = {'top': 200, 'left': 600, 'width': width, 'height': height}
 
 
