@@ -545,8 +545,11 @@ output = {'raw_detection_boxes': np.array([[ 4.03258950e-03, -1.75348297e-03,  8
        [5.62706292e-01, 9.52749968e-01, 6.30641162e-01, 9.91797566e-01],
        [7.93966830e-01, 9.74508703e-01, 8.40265810e-01, 9.92313683e-01]],
       dtype=np.float32), 'num_detections': 100}
-output_cleaned = clean_output(output,0.5)
-print(output_cleaned["detection_boxes"])
+print(output.keys())
+print(output["detection_scores"])
+# output_cleaned = clean_output(output,0.5)
+# print(output_cleaned["detection_boxes"])
+
 # for i in range(5):
 #     print(output["detection_multiclass_scores"][i])
 #     print(output["raw_detection_scores"][i])

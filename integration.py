@@ -17,6 +17,7 @@ import os
 
 output_directory = os.path.abspath('inference_graph_2')
 labelmap_path = os.path.abspath('labelmap.pbtxt')
+print(labelmap_path)
 
 model = tf.saved_model.load(output_directory)
 category_index = label_map_util.create_category_index_from_labelmap(labelmap_path, use_display_name=True)
@@ -60,19 +61,16 @@ with mss.mss() as sct:
 
         output_dict = inference_utils.run_inference_for_single_image(model, img)
         prev_x = 0
-        for tensor in output_dict['detection_boxes']:
+
+        for tensor in output_dict['detection_boxes'][:2]:
             if output_dict['detection_scores'][count] > 0.4 and ((tensor[1] * img.shape[1] - prev_x) > prev_x*0.07 or (tensor[1] * img.shape[1] - prev_x) < prev_x*0.07):
                 xmin = int(tensor[1] * img.shape[1])
                 ymin = int(tensor[0] * img.shape[0])
                 xmax = int(tensor[3] * img.shape[1])
                 ymax = int(tensor[2] * img.shape[0])
                 center_x, center_y = (xmin + xmax)/2, (ymin + ymax)/2
-                time.sleep(0.6)
-                pyautogui.click(center_x+192,center_y+248)
-                count += 1
+                pyautogui.click(x=center_x+192,y=center_y+248,interval=0.6)
                 prev_x = center_x
-                # if count == 20:
-                #     time.sleep(30)
 
 
         boxes = output_dict["detection_boxes"]
@@ -89,8 +87,7 @@ with mss.mss() as sct:
                 break
 
         # cv2.imshow('img', img)
-        # cv2.imshow("img", image_np_with_detections)
-        cv2.waitKey(1)
+        cv2.imshow("img", image_np_with_detections)
         # if cv2.waitKey(5) & 0xFF == 27:
         #     cv2.destroyAllWindows() 
         
