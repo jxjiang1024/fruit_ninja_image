@@ -90,6 +90,8 @@ with mss.mss() as sct:
                 center_x, center_y = (xmin + xmax)//2, (ymin + ymax)//2
                 # print(center_x, center_y)
                 if (center_x>0.4*game_width) and (center_x<0.6*game_width):
+                    img = cv2.line(img,(0.4*game_width,0), (0.4*game_width,game_height), (0, 0, 255), 1)
+                    img = cv2.line(img,(0.6*game_width,0), (0.6*game_width,game_height), (0, 0, 255), 1)
                     pyautogui.click(x=center_x,y=center_y+(monitor["height"] * 15 // 100),interval=0)
                     img = cv2.circle(img, (center_x, center_y), 5, (0, 0, 255), 3)
                 prev_x = center_x
