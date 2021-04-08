@@ -17,7 +17,9 @@ import os
 
 output_directory = os.path.abspath('inference_graph_2')
 labelmap_path = os.path.abspath('labelmap.pbtxt')
+print("*"*50)
 print(labelmap_path)
+print("*"*50)
 
 model = tf.saved_model.load(output_directory)
 category_index = label_map_util.create_category_index_from_labelmap(labelmap_path, use_display_name=True)
@@ -61,9 +63,9 @@ with mss.mss() as sct:
 
         output_dict = inference_utils.run_inference_for_single_image(model, img)
         prev_x = 0
-
-        for tensor in output_dict['detection_boxes'][:2]:
-            if output_dict['detection_scores'][count] > 0.4 and ((tensor[1] * img.shape[1] - prev_x) > prev_x*0.07 or (tensor[1] * img.shape[1] - prev_x) < prev_x*0.07):
+        
+        for (i,tensor) in enumerate(output_dict['detection_boxes'][:2]):
+            if output_dict['detection_scores'][i] > 0.4 and ((tensor[1] * img.shape[1] - prev_x) > prev_x*0.07 or (tensor[1] * img.shape[1] - prev_x) < prev_x*0.07):
                 xmin = int(tensor[1] * img.shape[1])
                 ymin = int(tensor[0] * img.shape[0])
                 xmax = int(tensor[3] * img.shape[1])
