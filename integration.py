@@ -15,6 +15,7 @@ from inference_utils import *
 import tensorflow as tf
 import os
 import keyboard
+import mouse
 output_directory = os.path.abspath('inference_graph_2')
 labelmap_path = os.path.abspath('labelmap.pbtxt')
 print("*"*50)
@@ -97,8 +98,12 @@ with mss.mss() as sct:
         count += 1 
         
         if keyboard.is_pressed("q"):
+            print("break")
             break
         if keyboard.is_pressed("w"):
+            print("time paused")
+            # mouse.wait(10)
             time.sleep(10)
+            print("resumed")
    
 quit()
