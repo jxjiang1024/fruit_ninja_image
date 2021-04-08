@@ -14,7 +14,7 @@ import inference_utils
 from inference_utils import *
 import tensorflow as tf
 import os
-
+import keyboard
 output_directory = os.path.abspath('inference_graph_2')
 labelmap_path = os.path.abspath('labelmap.pbtxt')
 print("*"*50)
@@ -95,5 +95,10 @@ with mss.mss() as sct:
         
         cv2.waitKey(1)
         count += 1 
+        
+        if keyboard.is_pressed("q"):
+            break
+        if keyboard.is_pressed("w"):
+            time.sleep(10)
    
 quit()
