@@ -44,11 +44,13 @@ with mss.mss() as sct:
     # lower = top + 480  # 400px height
     # bbox = (left, top, right, lower)
     # count = 0
-    
+    game_width = 700
+    game_height = 500
+
     left = monitor["left"] # + monitor["width"] * 5 // 100  # 5% from the left
     top = monitor["top"] + monitor["height"] * 15 // 100  # 5% from the top
-    right = left + 700  # 400px width
-    lower = top + 500  # 400px height
+    right = left + game_width  # 400px width
+    lower = top + game_height  # 400px height
     bbox = (left, top, right, lower)
     count = 0
     test = False
@@ -63,33 +65,39 @@ with mss.mss() as sct:
 
         output_dict = inference_utils.run_inference_for_single_image(model, img)
         prev_x = 0
-        
-        for (i,tensor) in enumerate(output_dict['detection_boxes'][:2]):
+        iteration = 0
+        for (i,tensor) in enumerate(output_dict['detection_boxes']):
             if output_dict['detection_scores'][i] > 0.4 and ((tensor[1] * img.shape[1] - prev_x) > prev_x*0.07 or (tensor[1] * img.shape[1] - prev_x) < prev_x*0.07):
                 xmin = int(tensor[1] * img.shape[1])
                 ymin = int(tensor[0] * img.shape[0])
                 xmax = int(tensor[3] * img.shape[1])
                 ymax = int(tensor[2] * img.shape[0])
-                center_x, center_y = (xmin + xmax)/2, (ymin + ymax)/2
-                pyautogui.click(x=center_x+192,y=center_y+248,interval=0.6)
+                center_x, center_y = (xmin + xmax)//2, (ymin + ymax)//2
+                # print(center_x, center_y)
+                if (center_x>0.4*game_width) and (center_x<0.6*game_width):
+                    pyautogui.click(x=center_x,y=center_y+(monitor["height"] * 15 // 100),interval=0)
+                    img = cv2.circle(img, (center_x, center_y), 5, (0, 0, 255), 3)
                 prev_x = center_x
+                iteration+=1
+            if iteration==1:
+                break
 
 
-        boxes = output_dict["detection_boxes"]
-        for box in boxes:
-            img = cv2.rectangle(img, (int(box[0]), int(box[1]),int(box[2]), int(box[3])),(255, 0, 0),2)
-        # for 
-        image_np_with_detections = vis_util.visualize_boxes_and_labels_on_image_array(img, output_dict['detection_boxes'],
-                              output_dict['detection_classes'],output_dict['detection_scores'], category_index, instance_masks=output_dict.get('detection_masks_reframed', None), use_normalized_coordinates=True,
-                              line_thickness=8)
+        # boxes = output_dict["detection_boxes"]
+        # for box in boxes:
+        #     img = cv2.rectangle(img, (int(box[0]), int(box[1]),int(box[2]), int(box[3])),(255, 0, 0),2)
+
+        # image_np_with_detections = vis_util.visualize_boxes_and_labels_on_image_array(img, output_dict['detection_boxes'],
+        #                       output_dict['detection_classes'],output_dict['detection_scores'], category_index, instance_masks=output_dict.get('detection_masks_reframed', None), use_normalized_coordinates=True,
+        #                       line_thickness=8)
         if test:
             cv2.imwrite(f'./save/bounding_boxes/image_detected_{count}.jpg', image_np_with_detections)
             time.sleep(4)
             if count == 10:
                 break
 
-        # cv2.imshow('img', img)
-        cv2.imshow("img", image_np_with_detections)
+        cv2.imshow('img', img)
+        # cv2.imshow("img", image_np_with_detections)
         # if cv2.waitKey(5) & 0xFF == 27:
         #     cv2.destroyAllWindows() 
         

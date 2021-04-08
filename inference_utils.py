@@ -37,7 +37,7 @@ def run_inference_for_single_image(model, image):
   # Run inference
   model_fn = model.signatures['serving_default']
   output_dict = model_fn(input_tensor)
-  print(output_dict)
+  # print(output_dict)
   # All outputs are batches tensors.
   # Convert to numpy arrays, and take index [0] to remove the batch dimension.
   # We're only interested in the first num_detections.
