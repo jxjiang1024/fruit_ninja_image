@@ -15,6 +15,20 @@ from inference_utils import *
 import tensorflow as tf
 import os
 import keyboard
+import mouse
+import cv2
+import numpy as np
+import os
+import pyautogui
+import sys
+import threading
+from time import sleep
+import math
+import keyboard
+import cv2
+import mediapipe as mp
+import win32gui, win32api, win32con, ctypes, time
+from hand_control import activate_hand_pose
 output_directory = os.path.abspath('inference_graph_2')
 labelmap_path = os.path.abspath('labelmap.pbtxt')
 print("*"*50)
@@ -55,6 +69,7 @@ with mss.mss() as sct:
     count = 0
     test = False
     while True:
+        activate_hand_pose()
         last_time = time.time()
         screen = np.array(sct.grab(bbox))
         screen = np.flip(screen[:, :, :3], 2) 
@@ -105,8 +120,12 @@ with mss.mss() as sct:
         count += 1 
         
         if keyboard.is_pressed("q"):
+            print("break")
             break
         if keyboard.is_pressed("w"):
+            print("time paused")
+            # mouse.wait(10)
             time.sleep(10)
+            print("resumed")
    
 quit()
