@@ -28,7 +28,7 @@ import keyboard
 import cv2
 import mediapipe as mp
 import win32gui, win32api, win32con, ctypes, time
-from hand_control import activate_hand_pose
+# from hand_control import activate_hand_pose
 output_directory = os.path.abspath('inference_graph_2')
 labelmap_path = os.path.abspath('labelmap.pbtxt')
 print("*"*50)
@@ -52,24 +52,28 @@ with mss.mss() as sct:
 
     # Capture a bbox using percent values
     # 1920 *1080 coordinates
-    # left = monitor["left"] + monitor["width"] * 10 // 100  # 5% from the left
-    # top = monitor["top"] + monitor["height"] * 23 // 100  # 5% from the top
-    # right = left + 330  # 400px width
-    # lower = top + 480  # 400px height
-    # bbox = (left, top, right, lower)
-    # count = 0
+
     game_width = 700
     game_height = 500
 
-    left = monitor["left"] # + monitor["width"] * 5 // 100  # 5% from the left
-    top = monitor["top"] + monitor["height"] * 15 // 100  # 5% from the top
+    left = monitor["left"] + monitor["width"] * 10 // 100  # 5% from the left
+    top = monitor["top"] + monitor["height"] * 23 // 100  # 5% from the top
     right = left + game_width  # 400px width
     lower = top + game_height  # 400px height
     bbox = (left, top, right, lower)
+    # count = 0
+    
+
+    # left = monitor["left"] # + monitor["width"] * 5 // 100  # 5% from the left
+    # top = monitor["top"] + monitor["height"] * 15 // 100  # 5% from the top
+    # right = left + game_width  # 400px width
+    # lower = top + game_height  # 400px height
+    
+    bbox = (left, top, right, lower)
     count = 0
+    
     test = False
     while True:
-        activate_hand_pose()
         last_time = time.time()
         screen = np.array(sct.grab(bbox))
         screen = np.flip(screen[:, :, :3], 2) 
@@ -90,7 +94,7 @@ with mss.mss() as sct:
                 center_x, center_y = (xmin + xmax)//2, (ymin + ymax)//2
                 # print(center_x, center_y)
                 if (center_x>0.4*game_width) and (center_x<0.6*game_width):
-                    pyautogui.click(x=center_x,y=center_y+(monitor["height"] * 15 // 100),interval=0)
+                    # pyautogui.click(x=center_x,y=center_y+(monitor["height"] * 23 // 100),interval=0)
                     img = cv2.circle(img, (center_x, center_y), 5, (0, 0, 255), 3)
                 prev_x = center_x
                 iteration+=1

@@ -186,12 +186,12 @@ def activate_hand_pose():
                     print("space pressed")
                 # pointing left
                 elif thumb_xcoord > index_xcoord and index_xcoord < average_left_xcoord:
-                    if mouse_xcor > 500 : 
+                    if mouse_xcor > 0 : 
                         moveMouse(mouse_xcor*0.95,mouse_ycor)
                         print("mouse moved, left")
                 # pointing right
                 elif thumb_xcoord < index_xcoord and index_xcoord > average_left_xcoord:
-                    if mouse_xcor < 1790:
+                    if mouse_xcor < 850:
                         moveMouse(mouse_xcor*1.05,mouse_ycor)
                         print("mouse moved, right")
 
